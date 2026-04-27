@@ -1,1 +1,215 @@
-/* Add styles here */
+:root {
+    --primary-green: #2ecc71;
+    --dark-green: #27ae60;
+    --earth-brown: #795548;
+    --light-bg: #f4f7f6;
+    --white: #ffffff;
+    --text-color: #333;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+}
+
+body {
+    background-color: var(--light-bg);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    color: var(--dark-green);
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+.search-box {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.search-box input {
+    padding: 12px 20px;
+    border: 2px solid var(--primary-green);
+    border-radius: 25px;
+    width: 60%;
+    outline: none;
+    font-size: 1rem;
+}
+
+.search-box button {
+    background-color: var(--primary-green);
+    border: none;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.search-box button:hover {
+    background-color: var(--dark-green);
+}
+
+section {
+    background: var(--white);
+    padding: 25px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+}
+
+h3 {
+    margin-bottom: 15px;
+    color: var(--earth-brown);
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* Current Weather */
+.current-weather {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+    color: white;
+}
+
+.main-info {
+    text-align: center;
+}
+
+.temp-container {
+    font-size: 3.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.details {
+    display: flex;
+    gap: 20px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.detail-item i {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+/* Farming Advice */
+.advice-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.advice-card {
+    padding: 15px;
+    border-radius: 10px;
+    background-color: #f9fbf9;
+    border-left: 5px solid var(--primary-green);
+    text-align: center;
+}
+
+.advice-card i {
+    font-size: 2rem;
+    color: var(--dark-green);
+    margin-bottom: 10px;
+}
+
+.advice-card h4 {
+    margin-bottom: 5px;
+    color: var(--earth-brown);
+}
+
+/* Forecast */
+.forecast-list {
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    padding-bottom: 10px;
+}
+
+.forecast-item {
+    min-width: 100px;
+    text-align: center;
+    padding: 10px;
+    background: #f8f8f8;
+    border-radius: 10px;
+}
+
+.forecast-item .day {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Loader */
+.loader {
+    text-align: center;
+    padding: 50px;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #ddd;
+    border-top: 5px solid var(--primary-green);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.hidden {
+    display: none;
+}
+
+.error-msg {
+    color: #e74c3c;
+    text-align: center;
+    padding: 20px;
+}
+
+@media (max-width: 600px) {
+    .search-box input {
+        width: 100%;
+    }
+    .temp-container {
+        font-size: 2.5rem;
+    }
+    .details {
+        margin-top: 20px;
+        width: 100%;
+        justify-content: space-between;
+    }
+}

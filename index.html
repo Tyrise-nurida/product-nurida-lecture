@@ -1,14 +1,89 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello World</title>
-  <link href='/style.css' rel='stylesheet'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>누리다 농사 날씨 예측</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/dist/css/all.min.css">
 </head>
 <body>
-  <h1>Hello, world!</h1>
-  <button onclick="console.log('hello');">Press me</button>
-  <script defer type="text/javascript" src="/main.js"></script>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-seedling"></i> 누리다 농사 날씨 예측</h1>
+            <div class="search-box">
+                <input type="text" id="cityInput" placeholder="도시 이름을 입력하세요 (예: Seoul)...">
+                <button id="searchBtn"><i class="fas fa-search"></i></button>
+            </div>
+        </header>
+
+        <main id="weatherContent" class="hidden">
+            <section class="current-weather">
+                <div class="main-info">
+                    <h2 id="cityName">서울</h2>
+                    <div class="temp-container">
+                        <span id="currentTemp">--</span>°C
+                        <i id="weatherIcon" class="fas fa-sun"></i>
+                    </div>
+                    <p id="weatherDesc">맑음</p>
+                </div>
+                <div class="details">
+                    <div class="detail-item">
+                        <i class="fas fa-tint"></i>
+                        <span>습도</span>
+                        <span id="humidity">--%</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-wind"></i>
+                        <span>풍속</span>
+                        <span id="windSpeed">--m/s</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-cloud-rain"></i>
+                        <span>강수확률</span>
+                        <span id="rainProb">--%</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="farming-advice">
+                <h3><i class="fas fa-lightbulb"></i> 오늘 특화 농사 정보</h3>
+                <div class="advice-grid">
+                    <div class="advice-card" id="sowingAdvice">
+                        <i class="fas fa-leaf"></i>
+                        <h4>파종/심기</h4>
+                        <p>데이터 로딩 중...</p>
+                    </div>
+                    <div class="advice-card" id="pestAdvice">
+                        <i class="fas fa-bug"></i>
+                        <h4>병해충 주의</h4>
+                        <p>데이터 로딩 중...</p>
+                    </div>
+                    <div class="advice-card" id="workAdvice">
+                        <i class="fas fa-tools"></i>
+                        <h4>농작업 추천</h4>
+                        <p>데이터 로딩 중...</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="forecast">
+                <h3><i class="fas fa-calendar-alt"></i> 주간 예보</h3>
+                <div id="forecastContainer" class="forecast-list">
+                    <!-- Forecast items will be injected here -->
+                </div>
+            </section>
+        </main>
+
+        <div id="loading" class="loader">
+            <div class="spinner"></div>
+            <p>날씨 정보를 가져오는 중입니다...</p>
+        </div>
+
+        <div id="error" class="error-msg hidden">
+            <p>날씨 정보를 가져오는데 실패했습니다. 도시 이름을 확인해주세요.</p>
+        </div>
+    </div>
+    <script src="main.js"></script>
 </body>
 </html>
