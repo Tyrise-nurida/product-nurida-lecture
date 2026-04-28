@@ -6,6 +6,9 @@
     <title>누리다 농사 날씨 예측</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/dist/css/all.min.css">
+    <!-- Teachable Machine Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -20,6 +23,7 @@
 
         <main id="weatherContent" class="hidden">
             <section class="current-weather">
+                <!-- ... (Weather content) ... -->
                 <div class="main-info">
                     <h2 id="cityName">서울</h2>
                     <div class="temp-container">
@@ -68,6 +72,22 @@
                 </div>
             </section>
 
+            <!-- AI Diagnosis Section -->
+            <section class="ai-diagnosis">
+                <h3><i class="fas fa-microscope"></i> AI 병해충 실시간 진단</h3>
+                <div class="ai-container">
+                    <div id="webcam-container"></div>
+                    <div class="diagnosis-info">
+                        <button type="button" id="startAiBtn" class="ai-btn">진단 시작하기</button>
+                        <div id="label-container"></div>
+                        <div id="diagnosis-result" class="result-box hidden">
+                            <h4 id="result-label">진단 결과: --</h4>
+                            <p id="result-desc">카메라를 작물에 비춰주세요.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <section class="forecast">
                 <h3><i class="fas fa-calendar-alt"></i> 주간 예보</h3>
                 <div id="forecastContainer" class="forecast-list">
@@ -76,6 +96,7 @@
             </section>
 
             <section class="contact-section">
+                <!-- ... (Contact content) ... -->
                 <h3><i class="fas fa-envelope"></i> 제휴 문의</h3>
                 <form action="https://formspree.io/f/mgorjppl" method="POST" class="contact-form">
                     <div class="form-group">
@@ -91,6 +112,7 @@
             </section>
 
             <section class="comments-section">
+                <!-- ... (Disqus content) ... -->
                 <h3><i class="fas fa-comments"></i> 댓글</h3>
                 <div id="disqus_thread"></div>
                 <script>
@@ -99,8 +121,8 @@
                     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
                     /*
                     var disqus_config = function () {
-                    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-                    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+                    this.page.url = window.location.href;  // Replace PAGE_URL with your page's canonical URL variable
+                    this.page.identifier = window.location.pathname; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
                     };
                     */
                     (function() { // DON'T EDIT BELOW THIS LINE
@@ -126,3 +148,4 @@
     <script src="main.js"></script>
 </body>
 </html>
+ 
