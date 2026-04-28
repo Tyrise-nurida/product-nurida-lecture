@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NURIDA | 미래지향적 정밀 농업 솔루션</title>
+    <title>NURIDA | 스마트 농업 통합 관제 시스템</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/dist/css/all.min.css">
     <!-- Google Fonts -->
@@ -13,37 +13,54 @@
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
 </head>
 <body>
+    <!-- 상단 통합 네비게이션 바 -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-microchip"></i> NURIDA
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#weather-center"><i class="fas fa-satellite-dish"></i> 기상 관제 센터</a></li>
+                <li><a href="#pest-catalog"><i class="fas fa-book-medical"></i> 사과 정밀 도감</a></li>
+                <li><a href="#ai-scanner"><i class="fas fa-microscope"></i> AI 진단 스캐너</a></li>
+                <li><a href="#tech-guide"><i class="fas fa-lightbulb"></i> 고품질 육성 기술</a></li>
+            </ul>
+            <button id="themeToggle" class="nav-toggle">라이트 모드</button>
+        </div>
+    </nav>
+
     <div class="glass-overlay"></div>
     <div class="container">
-        <header>
-            <div class="brand-zone">
-                <i class="fas fa-microchip"></i>
-                <span class="brand-name">NURIDA SMART FARM</span>
-            </div>
-            <button id="themeToggle" class="modern-toggle">시스템 모드 전환</button>
+        <header id="hero-header">
             <h1>데이터 기반 고품질 사과 육성 솔루션</h1>
             <p class="subtitle">기상 데이터 분석과 AI 진단으로 완성하는 미래형 사과 농업</p>
             <div class="search-box">
                 <input type="text" id="cityInput" placeholder="관제할 지역을 입력하세요 (예: 서울, 청송, 장수)...">
-                <button id="searchBtn"><i class="fas fa-satellite-dish"></i> 관제 시작</button>
+                <button id="searchBtn">관제 시작</button>
             </div>
         </header>
 
         <main id="weatherContent" class="hidden">
-            <!-- 1. 정밀 기상 관제 섹션 -->
-            <section class="dashboard-section current-weather">
+            <!-- 1. 정밀 기상 관제 섹션 (비주얼 강화) -->
+            <section id="weather-center" class="dashboard-section current-weather">
                 <div class="section-header">
                     <h3><i class="fas fa-broadcast-tower"></i> 실시간 정밀 기상 관제</h3>
                     <span id="updateTime" class="update-time">SYNC: --:--:--</span>
                 </div>
-                <div class="main-stats">
-                    <div class="city-info">
-                        <h2 id="cityName">서울</h2>
-                        <p id="weatherDesc">관제 데이터 수신 중...</p>
+                <div class="weather-visual-container">
+                    <!-- 육안으로 바로 확인 가능한 대형 아이콘 -->
+                    <div id="weatherVisual" class="weather-visual-box">
+                        <i id="mainWeatherIcon" class="fas fa-sun"></i>
+                        <div class="weather-effect-layer"></div>
                     </div>
-                    <div class="temp-display">
-                        <span id="currentTemp">--</span><span class="unit">°C</span>
-                        <i id="weatherIcon" class="fas fa-satellite"></i>
+                    <div class="main-stats-text">
+                        <div class="city-info">
+                            <h2 id="cityName">서울</h2>
+                            <p id="weatherDesc">관제 데이터 수신 중...</p>
+                        </div>
+                        <div class="temp-display">
+                            <span id="currentTemp">--</span><span class="unit">°C</span>
+                        </div>
                     </div>
                 </div>
                 <div class="stat-grid">
@@ -86,43 +103,98 @@
                     </div>
                 </div>
                 <div class="official-link">
-                    <a href="https://www.weather.go.kr/" target="_blank">
-                        기상청 위성 관제 시스템 연결 <i class="fas fa-arrow-right"></i>
-                    </a>
+                    <a href="https://www.weather.go.kr/" target="_blank">기상청 연결 <i class="fas fa-arrow-right"></i></a>
                 </div>
             </section>
 
-            <!-- 3. 고품질 육성 가이드 (Farming Advice) -->
-            <section class="dashboard-section advice-section">
-                <h3><i class="fas fa-award"></i> 고품질 작물 육성 정밀 가이드</h3>
-                <div class="advice-grid">
-                    <div class="advice-card" id="sowingAdvice">
-                        <div class="card-icon"><i class="fas fa-seedling"></i></div>
-                        <h4>정밀 파종 및 정식</h4>
-                        <p>환경 분석 결과 대기 중...</p>
+            <!-- 3. 사과 병해충 도감 (NCPMS 기반 카테고리화) - NEW CATEGORY SECTION -->
+            <section id="pest-catalog" class="dashboard-section apple-pest-catalog">
+                <div class="section-header">
+                    <h3><i class="fas fa-book-medical"></i> 사과 정밀 도감 카테고리</h3>
+                    <p class="section-desc">국가병해충관리시스템(NCPMS) 기반 전문 도감</p>
+                </div>
+                
+                <div class="pest-category-tabs">
+                    <button class="pest-tab active" data-category="disease">주요 병해</button>
+                    <button class="pest-tab" data-category="insect">주요 해충</button>
+                    <button class="pest-tab" data-category="physiological">생리 장해</button>
+                </div>
+
+                <div class="pest-grid" id="pestGrid">
+                    <!-- 병해 카테고리 -->
+                    <div class="pest-item disease">
+                        <div class="pest-img-placeholder"><i class="fas fa-apple-whole"></i></div>
+                        <div class="pest-info">
+                            <h4>탄저병 (Anthracnose)</h4>
+                            <p>7~8월 고온다습 시 발생. 과실에 움푹한 반점 형성. 병든 과실 즉시 소각.</p>
+                        </div>
                     </div>
-                    <div class="advice-card" id="pestAdvice">
-                        <div class="card-icon"><i class="fas fa-shield-virus"></i></div>
-                        <h4>병해충 예보 알림</h4>
-                        <p>환경 분석 결과 대기 중...</p>
+                    <div class="pest-item disease">
+                        <div class="pest-img-placeholder"><i class="fas fa-leaf"></i></div>
+                        <div class="pest-info">
+                            <h4>갈색무늬병</h4>
+                            <p>잎에 반점이 생기며 낙엽 유발. 수세 약화의 주원인. 통풍 관리 중요.</p>
+                        </div>
                     </div>
-                    <div class="advice-card" id="workAdvice">
-                        <div class="card-icon"><i class="fas fa-tractor"></i></div>
-                        <h4>최적 농작업 추천</h4>
-                        <p>환경 분석 결과 대기 중...</p>
+                    <div class="pest-item disease">
+                        <div class="pest-img-placeholder"><i class="fas fa-circle-nodes"></i></div>
+                        <div class="pest-info">
+                            <h4>겹무늬썩음병</h4>
+                            <p>과실 표면에 겹무늬 모양 반점. 비 오기 전후 정밀 방제 필수.</p>
+                        </div>
                     </div>
+                    <!-- 해충 카테고리 -->
+                    <div class="pest-item insect">
+                        <div class="pest-img-placeholder"><i class="fas fa-bug"></i></div>
+                        <div class="pest-info">
+                            <h4>사과응애</h4>
+                            <p>잎의 엽록소 파괴. 고온 건조 시 급증. 초기 예찰 및 방제 필수.</p>
+                        </div>
+                    </div>
+                    <div class="pest-item insect">
+                        <div class="pest-img-placeholder"><i class="fas fa-worm"></i></div>
+                        <div class="pest-info">
+                            <h4>복숭아순나방</h4>
+                            <p>과실 내부를 갉아먹어 상품성 상실. 유충 침입 전 예방 살포 필요.</p>
+                        </div>
+                    </div>
+                    <div class="pest-item insect">
+                        <div class="pest-img-placeholder"><i class="fas fa-spider"></i></div>
+                        <div class="pest-info">
+                            <h4>점박이응애</h4>
+                            <p>잎 뒷면에서 흡즙. 잎이 백색으로 변하며 조기 낙엽 유발.</p>
+                        </div>
+                    </div>
+                    <!-- 생리 장해 카테고리 -->
+                    <div class="pest-item physiological">
+                        <div class="pest-img-placeholder"><i class="fas fa-flask"></i></div>
+                        <div class="pest-info">
+                            <h4>고두병 (Bitter Pit)</h4>
+                            <p>칼슘 결핍으로 발생. 과실 표면에 검은 반점. 토양 수분 및 칼슘 관리 중요.</p>
+                        </div>
+                    </div>
+                    <div class="pest-item physiological">
+                        <div class="pest-img-placeholder"><i class="fas fa-sun"></i></div>
+                        <div class="pest-info">
+                            <h4>일소 피해 (Sunscald)</h4>
+                            <p>강한 직사광선으로 과실 온도 상승. 화상 입은 듯한 변색. 미세 살수 권장.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="tech-footer">
+                    <a href="https://ncpms.rda.go.kr/" target="_blank">NCPMS 공식 도감 연동 <i class="fas fa-external-link-alt"></i></a>
                 </div>
             </section>
 
             <!-- 4. AI 병해충 정밀 진단 -->
-            <section class="dashboard-section ai-diagnosis">
-                <h3><i class="fas fa-microscope"></i> AI 정밀 병해충 이미지 진단</h3>
+            <section id="ai-scanner" class="dashboard-section ai-diagnosis">
+                <h3><i class="fas fa-microscope"></i> AI 정밀 이미지 스캔</h3>
                 <div class="ai-container">
                     <div id="image-preview-container">
                         <img id="image-preview" class="hidden" src="#" alt="미리보기">
                         <div id="upload-placeholder">
                             <i class="fas fa-expand"></i>
-                            <p>진단할 부위를 촬영하여 업로드하세요</p>
+                            <p>촬영 사진 분석하기</p>
                         </div>
                     </div>
                     <div class="diagnosis-info">
@@ -130,123 +202,68 @@
                         <button type="button" id="uploadBtn" class="ai-btn">스캔 시작</button>
                         <div id="label-container"></div>
                         <div id="diagnosis-result" class="result-box hidden">
-                            <h4 id="result-label">진단 결과: --</h4>
-                            <p id="result-desc">이미지 분석 완료.</p>
+                            <h4 id="result-label">결과: --</h4>
+                            <p id="result-desc">스캔 완료.</p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- 5. 사과 병해충 도감 (NCPMS 기반) - NEW -->
-            <section class="dashboard-section apple-pest-catalog">
-                <h3><i class="fas fa-book-medical"></i> 사과 주요 병해충 정밀 도감 (NCPMS)</h3>
-                <p class="section-desc">사과 농가의 고품질 생산을 위협하는 주요 병해충 정보입니다.</p>
-                <div class="pest-grid">
-                    <div class="pest-item">
-                        <div class="pest-img-placeholder"><i class="fas fa-apple-whole"></i></div>
-                        <div class="pest-info">
-                            <h4>탄저병 (Anthracnose)</h4>
-                            <p>과실에 갈색 반점이 생겨 움푹해지며, 고온다습한 장마철에 급격히 확산됩니다. 병든 과실은 즉시 제거하세요.</p>
-                        </div>
+            <!-- 5. 고품질 육성 가이드 -->
+            <section id="tech-guide" class="dashboard-section advice-section">
+                <h3><i class="fas fa-award"></i> 실시간 육성 가이드</h3>
+                <div class="advice-grid">
+                    <div class="advice-card" id="sowingAdvice">
+                        <div class="card-icon"><i class="fas fa-seedling"></i></div>
+                        <h4>환경 분석 데이터</h4>
+                        <p>대기 중...</p>
                     </div>
-                    <div class="pest-item">
-                        <div class="pest-img-placeholder"><i class="fas fa-leaf"></i></div>
-                        <div class="pest-info">
-                            <h4>갈색무늬병 (Marssonina blotch)</h4>
-                            <p>잎에 황색 테두리의 갈색 반점이 형성되고 조기 낙엽을 유발합니다. 통풍과 채광 관리가 필수적입니다.</p>
-                        </div>
+                    <div class="advice-card" id="pestAdvice">
+                        <div class="card-icon"><i class="fas fa-shield-virus"></i></div>
+                        <h4>병해충 예보</h4>
+                        <p>대기 중...</p>
                     </div>
-                    <div class="pest-item">
-                        <div class="pest-img-placeholder"><i class="fas fa-circle-nodes"></i></div>
-                        <div class="pest-info">
-                            <h4>겹무늬썩음병 (Botryosphaeria)</h4>
-                            <p>과실 표면에 겹무늬 모양의 반점이 생기며 부패합니다. 비 오기 전후 정밀 방제가 중요합니다.</p>
-                        </div>
+                    <div class="advice-card" id="workAdvice">
+                        <div class="card-icon"><i class="fas fa-tractor"></i></div>
+                        <h4>추천 농작업</h4>
+                        <p>대기 중...</p>
                     </div>
-                    <div class="pest-item">
-                        <div class="pest-img-placeholder"><i class="fas fa-bug"></i></div>
-                        <div class="pest-info">
-                            <h4>사과응애 (Red Mite)</h4>
-                            <p>잎 뒷면에서 흡즙하여 잎이 백색으로 변하며 수세를 약화시킵니다. 초기 예찰이 고품질 수확의 관건입니다.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="tech-footer">
-                    <a href="https://ncpms.rda.go.kr/" target="_blank">* 출처: 국가병해충관리시스템(NCPMS) 자세히 보기 <i class="fas fa-external-link-alt"></i></a>
                 </div>
             </section>
 
-            <!-- 6. 사과 고품질 재배 핵심 기술 -->
+            <!-- 6. 핵심 기술 정보 -->
             <section class="dashboard-section apple-tech-info">
-                <h3><i class="fas fa-lightbulb"></i> 고품질 사과 육성 핵심 기술</h3>
+                <h3><i class="fas fa-lightbulb"></i> 고품질 육성 핵심 기술</h3>
                 <div class="tech-grid">
-                    <div class="tech-card">
-                        <div class="tech-header">
-                            <i class="fas fa-vial"></i>
-                            <h4>정밀 토양 및 영양 관리</h4>
-                        </div>
-                        <p>사과는 pH 6.0~6.5의 약산성 토양에서 최적의 당도를 냅니다. 정기적인 토양 검정을 통해 부족한 미량 요소를 정밀 시비하세요.</p>
-                    </div>
-                    <div class="tech-card">
-                        <div class="tech-header">
-                            <i class="fas fa-scissors"></i>
-                            <h4>품질 위주 수형 관리</h4>
-                        </div>
-                        <p>'세장방추형' 수형은 햇빛 이용 효율을 극대화하여 색택과 당도를 높입니다. 수관 내부에 빛이 잘 들도록 도장지를 정리하세요.</p>
-                    </div>
-                    <div class="tech-card">
-                        <div class="tech-header">
-                            <i class="fas fa-water"></i>
-                            <h4>수분 스트레스 관리</h4>
-                        </div>
-                        <p>과실 비대기 수분 공급은 크기와 당도에 직결됩니다. 멀칭과 관수 시설을 활용하여 토양 수분을 일정하게 유지하는 것이 고품질의 비결입니다.</p>
-                    </div>
-                    <div class="tech-card">
-                        <div class="tech-header">
-                            <i class="fas fa-check-double"></i>
-                            <h4>고품질 방제 시스템 (IPM)</h4>
-                        </div>
-                        <p>단순 살포가 아닌, 기상 기반의 정밀 방제를 통해 농약 잔류는 줄이고 방제 효과는 높여 안전한 고품질 사과를 생산합니다.</p>
-                    </div>
-                </div>
-                <div class="tech-footer">
-                    <p>* 농촌진흥청 농사로 고품질 재배 가이드 참조</p>
+                    <div class="tech-card"><h4>정밀 토양 관리</h4><p>pH 6.0~6.5 유지 필수.</p></div>
+                    <div class="tech-card"><h4>품질 위주 수형</h4><p>세장방추형 광효율 극대화.</p></div>
+                    <div class="tech-card"><h4>수분 제어 기술</h4><p>비대기 관수량 정밀 조절.</p></div>
+                    <div class="tech-card"><h4>정밀 방제 시스템</h4><p>IPM 기반 안전 농산물 생산.</p></div>
                 </div>
             </section>
 
             <section class="dashboard-section forecast">
-                <h3><i class="fas fa-calendar-days"></i> 7일간의 환경 예보</h3>
+                <h3><i class="fas fa-calendar-days"></i> 주간 관제 예보</h3>
                 <div id="forecastContainer" class="forecast-list"></div>
             </section>
 
             <section class="dashboard-section contact-section">
-                <h3><i class="fas fa-handshake"></i> 스마트팜 도입 및 제휴 문의</h3>
+                <h3><i class="fas fa-handshake"></i> 전문가 상담 신청</h3>
                 <form action="https://formspree.io/f/mgorjppl" method="POST" class="contact-form">
-                    <div class="form-group">
-                        <label for="email">연락처/이메일</label>
-                        <input type="email" name="email" id="email" placeholder="전문가 상담을 위해 연락처를 남겨주세요." required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">문의 내용</label>
-                        <textarea name="message" id="message" rows="4" placeholder="스마트 기술 도입이나 고품질 사과 재배 컨설팅 문의 내용을 입력해주세요." required></textarea>
-                    </div>
+                    <input type="email" name="email" placeholder="이메일 또는 연락처" required>
+                    <textarea name="message" rows="3" placeholder="재배 컨설팅 문의 내용을 입력해주세요." required></textarea>
                     <button type="submit" class="submit-btn">상담 요청하기</button>
                 </form>
-            </section>
-
-            <section class="dashboard-section comments-section">
-                <h3><i class="fas fa-comments"></i> 농가 정보 교류 커뮤니티</h3>
-                <div id="disqus_thread"></div>
             </section>
         </main>
 
         <div id="loading" class="loader">
             <div class="spinner"></div>
-            <p>위성 관제 시스템 연결 중...</p>
+            <p>관제 시스템 연결 중...</p>
         </div>
 
         <div id="error" class="error-msg hidden">
-            <p>데이터 전송 오류: 해당 지역의 관제 권한이 없거나 명칭이 잘못되었습니다.</p>
+            <p>데이터 전송 오류: 관제 권한이 없거나 명칭이 잘못되었습니다.</p>
         </div>
     </div>
     <script src="main.js"></script>

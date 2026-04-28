@@ -14,7 +14,7 @@ const elements = {
     humidity: document.getElementById('humidity'),
     windSpeed: document.getElementById('windSpeed'),
     rainProb: document.getElementById('rainProb'),
-    weatherIcon: document.getElementById('weatherIcon'),
+    mainWeatherIcon: document.getElementById('mainWeatherIcon'),
     sowingAdvice: document.querySelector('#sowingAdvice p'),
     pestAdvice: document.querySelector('#pestAdvice p'),
     workAdvice: document.querySelector('#workAdvice p'),
@@ -31,33 +31,55 @@ const elements = {
     rainNews: document.getElementById('rainNews'),
     windStrength: document.getElementById('windStrength'),
     uvIndex: document.getElementById('uvIndex'),
-    updateTime: document.getElementById('updateTime')
+    updateTime: document.getElementById('updateTime'),
+    pestTabs: document.querySelectorAll('.pest-tab'),
+    pestItems: document.querySelectorAll('.pest-item')
 };
 
 // --- Theme Toggle Logic ---
 elements.themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('light-mode');
     const isLight = document.body.classList.contains('light-mode');
-    elements.themeToggle.textContent = isLight ? '다크 시스템 모드' : '라이트 시스템 모드';
+    elements.themeToggle.textContent = isLight ? '다크 모드' : '라이트 모드';
     localStorage.setItem('theme', isLight ? 'light' : 'dark');
-
-    if (typeof DISQUS !== 'undefined') {
-        DISQUS.reset({
-            reload: true,
-            config: function () {
-                this.page.url = window.location.href;
-                this.page.identifier = window.location.pathname;
-            }
-        });
-    }
 });
 
 if (localStorage.getItem('theme') === 'light') {
     document.body.classList.add('light-mode');
-    elements.themeToggle.textContent = '다크 시스템 모드';
+    elements.themeToggle.textContent = '다크 모드';
 } else {
-    elements.themeToggle.textContent = '라이트 시스템 모드';
+    elements.themeToggle.textContent = '라이트 모드';
 }
+
+// --- Pest Catalog Tab Logic ---
+elements.pestTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        const category = tab.getAttribute('data-category');
+        
+        // Update active tab
+        elements.pestTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        // Filter items
+        elements.pestItems.forEach(item => {
+            if (item.classList.contains(category)) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+});
+
+// Initial filter for disease (default active tab)
+const initialCategory = 'disease';
+elements.pestItems.forEach(item => {
+    if (item.classList.contains(initialCategory)) {
+        item.style.display = 'flex';
+    } else {
+        item.style.display = 'none';
+    }
+});
 
 // --- AI Diagnosis Logic ---
 let aiModel, maxPredictions;
@@ -99,7 +121,7 @@ async function runDiagnosis() {
         prediction.sort((a, b) => b.probability - a.probability);
         
         const topResult = prediction[0];
-        elements.resultLabel.textContent = `분석 결과: ${topResult.className} (${Math.round(topResult.probability * 100)}%)`;
+        elements.resultLabel.textContent = `결과: ${topResult.className} (${Math.round(topResult.probability * 100)}%)`;
         elements.diagnosisResult.classList.remove('hidden');
 
         if (topResult.probability > 0.5) {
@@ -115,11 +137,14 @@ async function runDiagnosis() {
         }
 
         elements.labelContainer.innerHTML = '';
-        prediction.forEach(p => {
+        prediction.slice(0, 3).forEach(p => {
             const bar = document.createElement('div');
             bar.className = 'prediction-bar';
             bar.innerHTML = `
-                <span>${p.className}</span>
+                <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:4px;">
+                    <span>${p.className}</span>
+                    <span>${Math.round(p.probability * 100)}%</span>
+                </div>
                 <div class="progress"><div class="fill" style="width: ${p.probability * 100}%"></div></div>
             `;
             elements.labelContainer.appendChild(bar);
@@ -174,7 +199,7 @@ function updateUI(data, city) {
     elements.cityName.textContent = city;
     elements.currentTemp.textContent = Math.round(current.temperature);
     elements.weatherDesc.textContent = weatherInfo.desc;
-    elements.weatherIcon.className = `fas ${weatherInfo.icon}`;
+    elements.mainWeatherIcon.className = `fas ${weatherInfo.icon}`;
     elements.humidity.textContent = `${data.hourly.relativehumidity_2m[0]}%`;
     elements.windSpeed.textContent = `${current.windspeed}km/h`;
     elements.rainProb.textContent = `${data.hourly.precipitation_probability[0]}%`;
