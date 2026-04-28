@@ -74,15 +74,22 @@
 
             <!-- AI Diagnosis Section -->
             <section class="ai-diagnosis">
-                <h3><i class="fas fa-microscope"></i> AI 병해충 실시간 진단</h3>
+                <h3><i class="fas fa-microscope"></i> AI 병해충 사진 진단</h3>
                 <div class="ai-container">
-                    <div id="webcam-container"></div>
+                    <div id="image-preview-container">
+                        <img id="image-preview" class="hidden" src="#" alt="미리보기">
+                        <div id="upload-placeholder">
+                            <i class="fas fa-camera"></i>
+                            <p>사진을 업로드하여 진단하세요</p>
+                        </div>
+                    </div>
                     <div class="diagnosis-info">
-                        <button type="button" id="startAiBtn" class="ai-btn">진단 시작하기</button>
+                        <input type="file" id="imageInput" accept="image/*" class="hidden">
+                        <button type="button" id="uploadBtn" class="ai-btn">사진 선택 및 진단</button>
                         <div id="label-container"></div>
                         <div id="diagnosis-result" class="result-box hidden">
                             <h4 id="result-label">진단 결과: --</h4>
-                            <p id="result-desc">카메라를 작물에 비춰주세요.</p>
+                            <p id="result-desc">이미지 분석 완료.</p>
                         </div>
                     </div>
                 </div>

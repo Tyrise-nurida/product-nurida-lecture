@@ -20,8 +20,10 @@ const elements = {
     workAdvice: document.querySelector('#workAdvice p'),
     forecastContainer: document.getElementById('forecastContainer'),
     themeToggle: document.getElementById('themeToggle'),
-    startAiBtn: document.getElementById('startAiBtn'),
-    webcamContainer: document.getElementById('webcam-container'),
+    imageInput: document.getElementById('imageInput'),
+    uploadBtn: document.getElementById('uploadBtn'),
+    imagePreview: document.getElementById('image-preview'),
+    uploadPlaceholder: document.getElementById('upload-placeholder'),
     labelContainer: document.getElementById('label-container'),
     diagnosisResult: document.getElementById('diagnosis-result'),
     resultLabel: document.getElementById('result-label'),
@@ -51,72 +53,86 @@ if (localStorage.getItem('theme') === 'dark') {
     elements.themeToggle.textContent = 'LIGHT MODE';
 }
 
-// --- AI Diagnosis Logic ---
-let aiModel, webcam, maxPredictions;
+// --- AI Diagnosis Logic (File Upload Version) ---
+let aiModel, maxPredictions;
 
-async function initAi() {
-    elements.startAiBtn.disabled = true;
-    elements.startAiBtn.textContent = "모델 로딩 중...";
-
-    const modelURL = AI_MODEL_URL + "model.json";
-    const metadataURL = AI_MODEL_URL + "metadata.json";
-
-    aiModel = await tmImage.load(modelURL, metadataURL);
-    maxPredictions = aiModel.getTotalClasses();
-
-    const flip = true;
-    webcam = new tmImage.Webcam(300, 300, flip);
-    await webcam.setup();
-    await webcam.play();
-    window.requestAnimationFrame(loopAi);
-
-    elements.webcamContainer.appendChild(webcam.canvas);
-    elements.diagnosisResult.classList.remove('hidden');
-    elements.startAiBtn.classList.add('hidden');
-}
-
-async function loopAi() {
-    webcam.update();
-    await predictAi();
-    window.requestAnimationFrame(loopAi);
-}
-
-async function predictAi() {
-    const prediction = await aiModel.predict(webcam.canvas);
-
-    // Sort by probability
-    prediction.sort((a, b) => b.probability - a.probability);
-
-    const topResult = prediction[0];
-    elements.resultLabel.textContent = `진단 결과: ${topResult.className} (${Math.round(topResult.probability * 100)}%)`;
-
-    // Provide specific advice based on result
-    if (topResult.probability > 0.7) {
-        if (topResult.className.includes("탄저병")) {
-            elements.resultDesc.textContent = "탄저병 증상이 의심됩니다. 발생 초기에 등록 약제를 살포하고, 병든 열매는 즉시 제거하여 소각하세요.";
-        } else if (topResult.className.includes("겹무늬썩음병")) {
-            elements.resultDesc.textContent = "겹무늬썩음병 증상이 보입니다. 통풍과 채광이 잘 되도록 관리하고 비 오기 전후로 방제 작업을 수행하세요.";
-        } else {
-            elements.resultDesc.textContent = "상태가 양호해 보입니다. 지속적인 관찰을 유지해 주세요.";
-        }
-    } else {
-        elements.resultDesc.textContent = "분석 중입니다. 카메라를 환부 가까이 가져다주세요.";
+async function loadModel() {
+    if (!aiModel) {
+        const modelURL = AI_MODEL_URL + "model.json";
+        const metadataURL = AI_MODEL_URL + "metadata.json";
+        aiModel = await tmImage.load(modelURL, metadataURL);
+        maxPredictions = aiModel.getTotalClasses();
     }
-
-    // Update progress bars or labels
-    elements.labelContainer.innerHTML = '';
-    prediction.forEach(p => {
-        const bar = document.createElement('div');
-        bar.className = 'prediction-bar';
-        bar.innerHTML = `
-            <span>${p.className}</span>
-            <div class="progress"><div class="fill" style="width: ${p.probability * 100}%"></div></div>
-        `;
-        elements.labelContainer.appendChild(bar);
-    });
 }
 
-elements.startAiBtn.addEventListener('click', initAi);
+elements.uploadBtn.addEventListener('click', () => {
+    elements.imageInput.click();
+});
+
+elements.imageInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Show preview
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+        elements.imagePreview.src = event.target.result;
+        elements.imagePreview.classList.remove('hidden');
+        elements.uploadPlaceholder.classList.add('hidden');
+        
+        // Start Diagnosis
+        await runDiagnosis();
+    };
+    reader.readAsDataURL(file);
+});
+
+async function runDiagnosis() {
+    elements.uploadBtn.disabled = true;
+    elements.uploadBtn.textContent = "분석 중...";
+    
+    try {
+        await loadModel();
+        const prediction = await aiModel.predict(elements.imagePreview);
+        
+        // Sort by probability
+        prediction.sort((a, b) => b.probability - a.probability);
+        
+        const topResult = prediction[0];
+        elements.resultLabel.textContent = `진단 결과: ${topResult.className} (${Math.round(topResult.probability * 100)}%)`;
+        elements.diagnosisResult.classList.remove('hidden');
+
+        // Advice
+        if (topResult.probability > 0.5) {
+            if (topResult.className.includes("탄저병")) {
+                elements.resultDesc.textContent = "탄저병 증상이 의심됩니다. 발생 초기에 등록 약제를 살포하고, 병든 열매는 즉시 제거하여 소각하세요.";
+            } else if (topResult.className.includes("겹무늬썩음병")) {
+                elements.resultDesc.textContent = "겹무늬썩음병 증상이 보입니다. 통풍과 채광이 잘 되도록 관리하고 비 오기 전후로 방제 작업을 수행하세요.";
+            } else {
+                elements.resultDesc.textContent = "정상 상태이거나 판단이 어렵습니다. 다른 사진으로 시도해 보세요.";
+            }
+        } else {
+            elements.resultDesc.textContent = "확률이 낮아 정확한 진단이 어렵습니다. 환부를 더 가깝고 선명하게 찍어주세요.";
+        }
+
+        // Progress bars
+        elements.labelContainer.innerHTML = '';
+        prediction.forEach(p => {
+            const bar = document.createElement('div');
+            bar.className = 'prediction-bar';
+            bar.innerHTML = `
+                <span>${p.className}</span>
+                <div class="progress"><div class="fill" style="width: ${p.probability * 100}%"></div></div>
+            `;
+            elements.labelContainer.appendChild(bar);
+        });
+    } catch (err) {
+        console.error(err);
+        alert("진단 중 오류가 발생했습니다.");
+    } finally {
+        elements.uploadBtn.disabled = false;
+        elements.uploadBtn.textContent = "사진 선택 및 진단";
+    }
+}
 
 // --- Weather Logic ---
 const weatherMap = {
@@ -238,4 +254,3 @@ elements.cityInput.addEventListener('keypress', (e) => {
 });
 
 getWeatherData('Seoul');
-
