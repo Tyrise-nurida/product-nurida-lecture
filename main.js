@@ -31,7 +31,8 @@ const elements = {
     // New detailed weather elements
     rainNews: document.getElementById('rainNews'),
     windStrength: document.getElementById('windStrength'),
-    uvIndex: document.getElementById('uvIndex')
+    uvIndex: document.getElementById('uvIndex'),
+    updateTime: document.getElementById('updateTime')
 };
 
 // --- Theme Toggle Logic ---
@@ -188,6 +189,10 @@ function updateUI(data, city) {
     // Detailed Weather Info
     updateDetailedInfo(data);
     
+    // Timestamp
+    const now = new Date();
+    elements.updateTime.textContent = `업데이트: ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+    
     generateAdvice(current, data.hourly.relativehumidity_2m[0], data.hourly.precipitation_probability[0]);
     renderForecast(data.daily);
     elements.weatherContent.classList.remove('hidden');
@@ -293,5 +298,11 @@ elements.cityInput.addEventListener('keypress', (e) => {
         if (city) getWeatherData(city);
     }
 });
+
+// Auto refresh every 30 minutes
+setInterval(() => {
+    const currentCity = elements.cityName.textContent || 'Seoul';
+    getWeatherData(currentCity);
+}, 30 * 60 * 1000);
 
 getWeatherData('Seoul');
