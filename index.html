@@ -3,119 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>누리다 농사 날씨 예측</title>
+    <title>NURIDA | 미래지향적 정밀 농업 솔루션</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/dist/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <!-- Teachable Machine Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
 </head>
 <body>
+    <div class="glass-overlay"></div>
     <div class="container">
         <header>
-            <button id="themeToggle">DARK MODE</button>
-            <h1><i class="fas fa-seedling"></i> 누리다 농사 날씨 예측</h1>
+            <div class="brand-zone">
+                <i class="fas fa-microchip"></i>
+                <span class="brand-name">NURIDA SMART FARM</span>
+            </div>
+            <button id="themeToggle" class="modern-toggle">시스템 모드 전환</button>
+            <h1>데이터 기반 고품질 사과 육성 솔루션</h1>
+            <p class="subtitle">기상 데이터 분석과 AI 진단으로 완성하는 미래형 사과 농업</p>
             <div class="search-box">
-                <input type="text" id="cityInput" placeholder="도시 이름을 입력하세요 (예: Seoul)...">
-                <button id="searchBtn"><i class="fas fa-search"></i></button>
+                <input type="text" id="cityInput" placeholder="관제할 지역을 입력하세요 (예: 서울, 청송, 장수)...">
+                <button id="searchBtn"><i class="fas fa-satellite-dish"></i> 관제 시작</button>
             </div>
         </header>
 
         <main id="weatherContent" class="hidden">
-            <section class="current-weather">
-                <!-- ... (Weather content) ... -->
-                <div class="main-info">
-                    <h2 id="cityName">서울</h2>
-                    <div class="temp-container">
-                        <span id="currentTemp">--</span>°C
-                        <i id="weatherIcon" class="fas fa-sun"></i>
-                    </div>
-                    <p id="weatherDesc">맑음</p>
+            <!-- 1. 정밀 기상 관제 섹션 -->
+            <section class="dashboard-section current-weather">
+                <div class="section-header">
+                    <h3><i class="fas fa-broadcast-tower"></i> 실시간 정밀 기상 관제</h3>
+                    <span id="updateTime" class="update-time">SYNC: --:--:--</span>
                 </div>
-                <div class="details">
-                    <div class="detail-item">
-                        <i class="fas fa-tint"></i>
-                        <span>습도</span>
-                        <span id="humidity">--%</span>
+                <div class="main-stats">
+                    <div class="city-info">
+                        <h2 id="cityName">서울</h2>
+                        <p id="weatherDesc">관제 데이터 수신 중...</p>
                     </div>
-                    <div class="detail-item">
+                    <div class="temp-display">
+                        <span id="currentTemp">--</span><span class="unit">°C</span>
+                        <i id="weatherIcon" class="fas fa-satellite"></i>
+                    </div>
+                </div>
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <i class="fas fa-droplet"></i>
+                        <span>대기 습도</span>
+                        <strong id="humidity">--%</strong>
+                    </div>
+                    <div class="stat-item">
                         <i class="fas fa-wind"></i>
-                        <span>풍속</span>
-                        <span id="windSpeed">--m/s</span>
+                        <span>풍속/풍향</span>
+                        <strong id="windSpeed">--km/h</strong>
                     </div>
-                    <div class="detail-item">
-                        <i class="fas fa-cloud-rain"></i>
-                        <span>강수확률</span>
-                        <span id="rainProb">--%</span>
+                    <div class="stat-item">
+                        <i class="fas fa-cloud-showers-water"></i>
+                        <span>강수 확률</span>
+                        <strong id="rainProb">--%</strong>
                     </div>
                 </div>
             </section>
 
-            <!-- Detailed Weather Info Section -->
-            <section class="detailed-weather">
-                <div class="section-header">
-                    <h3><i class="fas fa-info-circle"></i> 기상청 데이터 기반 실시간 정보</h3>
-                    <span id="updateTime" class="update-time">업데이트: --:--:--</span>
-                </div>
+            <!-- 2. 기상 기반 예측 상세 -->
+            <section class="dashboard-section analysis-cards">
+                <h3><i class="fas fa-chart-line"></i> 기상 기반 생육 환경 분석</h3>
                 <div class="detail-grid">
-                    <div class="detail-card">
+                    <div class="detail-card highlight">
                         <i class="fas fa-umbrella"></i>
-                        <h4>비 소식</h4>
+                        <h4>강수 뉴스 분석</h4>
                         <p id="rainNews">데이터 분석 중...</p>
                     </div>
-                    <div class="detail-card">
+                    <div class="detail-card highlight">
                         <i class="fas fa-wind"></i>
-                        <h4>바람 세기</h4>
+                        <h4>기류 세기 분석</h4>
                         <p id="windStrength">데이터 분석 중...</p>
                     </div>
-                    <div class="detail-card">
+                    <div class="detail-card highlight">
                         <i class="fas fa-sun"></i>
-                        <h4>자외선/기타</h4>
-                        <p id="uvIndex">정보를 불러오는 중...</p>
+                        <h4>광량 및 자외선</h4>
+                        <p id="uvIndex">정보 분석 중...</p>
                     </div>
                 </div>
                 <div class="official-link">
-                    <a href="https://www.weather.go.kr/" target="_blank" rel="noopener noreferrer">
-                        <i class="fas fa-external-link-alt"></i> 기상청 공식 홈페이지에서 더 자세히 보기
+                    <a href="https://www.weather.go.kr/" target="_blank">
+                        기상청 위성 관제 시스템 연결 <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
             </section>
 
-            <section class="farming-advice">
-                <h3><i class="fas fa-lightbulb"></i> 오늘 특화 농사 정보</h3>
+            <!-- 3. 고품질 육성 가이드 (Farming Advice) -->
+            <section class="dashboard-section advice-section">
+                <h3><i class="fas fa-award"></i> 고품질 작물 육성 정밀 가이드</h3>
                 <div class="advice-grid">
                     <div class="advice-card" id="sowingAdvice">
-                        <i class="fas fa-leaf"></i>
-                        <h4>파종/심기</h4>
-                        <p>데이터 로딩 중...</p>
+                        <div class="card-icon"><i class="fas fa-seedling"></i></div>
+                        <h4>정밀 파종 및 정식</h4>
+                        <p>환경 분석 결과 대기 중...</p>
                     </div>
                     <div class="advice-card" id="pestAdvice">
-                        <i class="fas fa-bug"></i>
-                        <h4>병해충 주의</h4>
-                        <p>데이터 로딩 중...</p>
+                        <div class="card-icon"><i class="fas fa-shield-virus"></i></div>
+                        <h4>병해충 예보 알림</h4>
+                        <p>환경 분석 결과 대기 중...</p>
                     </div>
                     <div class="advice-card" id="workAdvice">
-                        <i class="fas fa-tools"></i>
-                        <h4>농작업 추천</h4>
-                        <p>데이터 로딩 중...</p>
+                        <div class="card-icon"><i class="fas fa-tractor"></i></div>
+                        <h4>최적 농작업 추천</h4>
+                        <p>환경 분석 결과 대기 중...</p>
                     </div>
                 </div>
             </section>
 
-            <!-- AI Diagnosis Section -->
-            <section class="ai-diagnosis">
-                <h3><i class="fas fa-microscope"></i> AI 병해충 사진 진단</h3>
+            <!-- 4. AI 병해충 정밀 진단 -->
+            <section class="dashboard-section ai-diagnosis">
+                <h3><i class="fas fa-microscope"></i> AI 정밀 병해충 이미지 진단</h3>
                 <div class="ai-container">
                     <div id="image-preview-container">
                         <img id="image-preview" class="hidden" src="#" alt="미리보기">
                         <div id="upload-placeholder">
-                            <i class="fas fa-camera"></i>
-                            <p>사진을 업로드하여 진단하세요</p>
+                            <i class="fas fa-expand"></i>
+                            <p>진단할 부위를 촬영하여 업로드하세요</p>
                         </div>
                     </div>
                     <div class="diagnosis-info">
                         <input type="file" id="imageInput" accept="image/*" class="hidden">
-                        <button type="button" id="uploadBtn" class="ai-btn">사진 선택 및 진단</button>
+                        <button type="button" id="uploadBtn" class="ai-btn">스캔 시작</button>
                         <div id="label-container"></div>
                         <div id="diagnosis-result" class="result-box hidden">
                             <h4 id="result-label">진단 결과: --</h4>
@@ -125,102 +137,118 @@
                 </div>
             </section>
 
-            <!-- Apple Cultivation Tech Info Section -->
-            <section class="apple-tech-info">
-                <h3><i class="fas fa-book-open"></i> 사과 재배 핵심 기술 정보</h3>
-                <div class="tech-grid">
-                    <div class="tech-card">
-                        <div class="tech-header">
-                            <i class="fas fa-mountain"></i>
-                            <h4>토양 및 환경 관리</h4>
+            <!-- 5. 사과 병해충 도감 (NCPMS 기반) - NEW -->
+            <section class="dashboard-section apple-pest-catalog">
+                <h3><i class="fas fa-book-medical"></i> 사과 주요 병해충 정밀 도감 (NCPMS)</h3>
+                <p class="section-desc">사과 농가의 고품질 생산을 위협하는 주요 병해충 정보입니다.</p>
+                <div class="pest-grid">
+                    <div class="pest-item">
+                        <div class="pest-img-placeholder"><i class="fas fa-apple-whole"></i></div>
+                        <div class="pest-info">
+                            <h4>탄저병 (Anthracnose)</h4>
+                            <p>과실에 갈색 반점이 생겨 움푹해지며, 고온다습한 장마철에 급격히 확산됩니다. 병든 과실은 즉시 제거하세요.</p>
                         </div>
-                        <p>사과는 배수가 잘 되고 유기물이 풍부한 사양토(모래참흙)에서 가장 잘 자랍니다. 토양 산도는 pH 6.0~6.5의 약산성이 적당하며, 뿌리 호흡을 위해 배수 시설 정비가 필수적입니다.</p>
                     </div>
-                    <div class="tech-card">
-                        <div class="tech-header">
-                            <i class="fas fa-tree"></i>
-                            <h4>수형 및 전정(가지치기)</h4>
+                    <div class="pest-item">
+                        <div class="pest-img-placeholder"><i class="fas fa-leaf"></i></div>
+                        <div class="pest-info">
+                            <h4>갈색무늬병 (Marssonina blotch)</h4>
+                            <p>잎에 황색 테두리의 갈색 반점이 형성되고 조기 낙엽을 유발합니다. 통풍과 채광 관리가 필수적입니다.</p>
                         </div>
-                        <p>주요 수형인 '세장방추형'은 햇빛 투과율을 높여 과실 품질을 향상시킵니다. 겨울철 전정 시 주지(원줄기)와 측지의 세력을 균형 있게 조절하여 꽃눈 형성을 돕습니다.</p>
                     </div>
-                    <div class="tech-card">
-                        <div class="tech-header">
-                            <i class="fas fa-flask"></i>
-                            <h4>시비(거름) 및 관수</h4>
+                    <div class="pest-item">
+                        <div class="pest-img-placeholder"><i class="fas fa-circle-nodes"></i></div>
+                        <div class="pest-info">
+                            <h4>겹무늬썩음병 (Botryosphaeria)</h4>
+                            <p>과실 표면에 겹무늬 모양의 반점이 생기며 부패합니다. 비 오기 전후 정밀 방제가 중요합니다.</p>
                         </div>
-                        <p>밑거름은 낙엽 후부터 땅이 얼기 전이나 이른 봄에 시비합니다. 개화기부터 비대기까지는 수분 부족 시 과실 발달이 저해되므로 5~10일 간격으로 정기적인 관수가 필요합니다.</p>
                     </div>
-                    <div class="tech-card">
-                        <div class="tech-header">
-                            <i class="fas fa-shield-virus"></i>
-                            <h4>병해충 종합 관리 (IPM)</h4>
+                    <div class="pest-item">
+                        <div class="pest-img-placeholder"><i class="fas fa-bug"></i></div>
+                        <div class="pest-info">
+                            <h4>사과응애 (Red Mite)</h4>
+                            <p>잎 뒷면에서 흡즙하여 잎이 백색으로 변하며 수세를 약화시킵니다. 초기 예찰이 고품질 수확의 관건입니다.</p>
                         </div>
-                        <p>탄저병, 겹무늬썩음병, 점무늬낙엽병이 주요 병해입니다. 약제 살포 시에는 잎 앞뒷면에 고르게 묻도록 하며, 전정 시 병든 가지를 철저히 제거하는 것이 방제의 시작입니다.</p>
                     </div>
                 </div>
                 <div class="tech-footer">
-                    <p>* 출처: 국립원예특작과학원 사과 재배 가이드 (농사로)</p>
+                    <a href="https://ncpms.rda.go.kr/" target="_blank">* 출처: 국가병해충관리시스템(NCPMS) 자세히 보기 <i class="fas fa-external-link-alt"></i></a>
                 </div>
             </section>
 
-            <section class="forecast">
-                <h3><i class="fas fa-calendar-alt"></i> 주간 예보</h3>
-                <div id="forecastContainer" class="forecast-list">
-                    <!-- Forecast items will be injected here -->
+            <!-- 6. 사과 고품질 재배 핵심 기술 -->
+            <section class="dashboard-section apple-tech-info">
+                <h3><i class="fas fa-lightbulb"></i> 고품질 사과 육성 핵심 기술</h3>
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <div class="tech-header">
+                            <i class="fas fa-vial"></i>
+                            <h4>정밀 토양 및 영양 관리</h4>
+                        </div>
+                        <p>사과는 pH 6.0~6.5의 약산성 토양에서 최적의 당도를 냅니다. 정기적인 토양 검정을 통해 부족한 미량 요소를 정밀 시비하세요.</p>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-header">
+                            <i class="fas fa-scissors"></i>
+                            <h4>품질 위주 수형 관리</h4>
+                        </div>
+                        <p>'세장방추형' 수형은 햇빛 이용 효율을 극대화하여 색택과 당도를 높입니다. 수관 내부에 빛이 잘 들도록 도장지를 정리하세요.</p>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-header">
+                            <i class="fas fa-water"></i>
+                            <h4>수분 스트레스 관리</h4>
+                        </div>
+                        <p>과실 비대기 수분 공급은 크기와 당도에 직결됩니다. 멀칭과 관수 시설을 활용하여 토양 수분을 일정하게 유지하는 것이 고품질의 비결입니다.</p>
+                    </div>
+                    <div class="tech-card">
+                        <div class="tech-header">
+                            <i class="fas fa-check-double"></i>
+                            <h4>고품질 방제 시스템 (IPM)</h4>
+                        </div>
+                        <p>단순 살포가 아닌, 기상 기반의 정밀 방제를 통해 농약 잔류는 줄이고 방제 효과는 높여 안전한 고품질 사과를 생산합니다.</p>
+                    </div>
+                </div>
+                <div class="tech-footer">
+                    <p>* 농촌진흥청 농사로 고품질 재배 가이드 참조</p>
                 </div>
             </section>
 
-            <section class="contact-section">
-                <!-- ... (Contact content) ... -->
-                <h3><i class="fas fa-envelope"></i> 제휴 문의</h3>
+            <section class="dashboard-section forecast">
+                <h3><i class="fas fa-calendar-days"></i> 7일간의 환경 예보</h3>
+                <div id="forecastContainer" class="forecast-list"></div>
+            </section>
+
+            <section class="dashboard-section contact-section">
+                <h3><i class="fas fa-handshake"></i> 스마트팜 도입 및 제휴 문의</h3>
                 <form action="https://formspree.io/f/mgorjppl" method="POST" class="contact-form">
                     <div class="form-group">
-                        <label for="email">이메일 주소</label>
-                        <input type="email" name="email" id="email" placeholder="example@email.com" required>
+                        <label for="email">연락처/이메일</label>
+                        <input type="email" name="email" id="email" placeholder="전문가 상담을 위해 연락처를 남겨주세요." required>
                     </div>
                     <div class="form-group">
                         <label for="message">문의 내용</label>
-                        <textarea name="message" id="message" rows="4" placeholder="제휴 관련 문의 내용을 입력해주세요..." required></textarea>
+                        <textarea name="message" id="message" rows="4" placeholder="스마트 기술 도입이나 고품질 사과 재배 컨설팅 문의 내용을 입력해주세요." required></textarea>
                     </div>
-                    <button type="submit" class="submit-btn">문의 보내기</button>
+                    <button type="submit" class="submit-btn">상담 요청하기</button>
                 </form>
             </section>
 
-            <section class="comments-section">
-                <!-- ... (Disqus content) ... -->
-                <h3><i class="fas fa-comments"></i> 댓글</h3>
+            <section class="dashboard-section comments-section">
+                <h3><i class="fas fa-comments"></i> 농가 정보 교류 커뮤니티</h3>
                 <div id="disqus_thread"></div>
-                <script>
-                    /**
-                    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-                    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
-                    /*
-                    var disqus_config = function () {
-                    this.page.url = window.location.href;  // Replace PAGE_URL with your page's canonical URL variable
-                    this.page.identifier = window.location.pathname; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-                    };
-                    */
-                    (function() { // DON'T EDIT BELOW THIS LINE
-                    var d = document, s = d.createElement('script');
-                    s.src = 'https://product-nurida-lecture-3.disqus.com/embed.js';
-                    s.setAttribute('data-timestamp', +new Date());
-                    (d.head || d.body).appendChild(s);
-                    })();
-                </script>
-                <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
             </section>
         </main>
 
         <div id="loading" class="loader">
             <div class="spinner"></div>
-            <p>날씨 정보를 가져오는 중입니다...</p>
+            <p>위성 관제 시스템 연결 중...</p>
         </div>
 
         <div id="error" class="error-msg hidden">
-            <p>날씨 정보를 가져오는데 실패했습니다. 도시 이름을 확인해주세요.</p>
+            <p>데이터 전송 오류: 해당 지역의 관제 권한이 없거나 명칭이 잘못되었습니다.</p>
         </div>
     </div>
     <script src="main.js"></script>
 </body>
 </html>
- 
