@@ -27,7 +27,11 @@ const elements = {
     labelContainer: document.getElementById('label-container'),
     diagnosisResult: document.getElementById('diagnosis-result'),
     resultLabel: document.getElementById('result-label'),
-    resultDesc: document.getElementById('result-desc')
+    resultDesc: document.getElementById('result-desc'),
+    // New detailed weather elements
+    rainNews: document.getElementById('rainNews'),
+    windStrength: document.getElementById('windStrength'),
+    uvIndex: document.getElementById('uvIndex')
 };
 
 // --- Theme Toggle Logic ---
@@ -158,7 +162,8 @@ async function getWeatherData(city) {
         if (geoData.length === 0) throw new Error('City not found');
         const { lat, lon, display_name } = geoData[0];
         const shortName = display_name.split(',')[0];
-        const weatherRes = await fetch(`${API_WEATHER}?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=relativehumidity_2m,precipitation_probability&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto`);
+        // Added uv_index_max to daily
+        const weatherRes = await fetch(`${API_WEATHER}?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=relativehumidity_2m,precipitation_probability&daily=weathercode,temperature_2m_max,temperature_2m_min,uv_index_max&timezone=auto`);
         const data = await weatherRes.json();
         updateUI(data, shortName);
     } catch (err) {
@@ -179,10 +184,46 @@ function updateUI(data, city) {
     elements.humidity.textContent = `${data.hourly.relativehumidity_2m[0]}%`;
     elements.windSpeed.textContent = `${current.windspeed}km/h`;
     elements.rainProb.textContent = `${data.hourly.precipitation_probability[0]}%`;
+    
+    // Detailed Weather Info
+    updateDetailedInfo(data);
+    
     generateAdvice(current, data.hourly.relativehumidity_2m[0], data.hourly.precipitation_probability[0]);
     renderForecast(data.daily);
     elements.weatherContent.classList.remove('hidden');
     elements.error.classList.add('hidden');
+}
+
+function updateDetailedInfo(data) {
+    // 1. Rain News (based on next 12 hours)
+    const rainProbs = data.hourly.precipitation_probability.slice(0, 12);
+    const maxRainProb = Math.max(...rainProbs);
+    if (maxRainProb >= 70) {
+        elements.rainNews.textContent = `비 소식 있음 (최대 ${maxRainProb}%) - 우산 필수`;
+    } else if (maxRainProb >= 30) {
+        elements.rainNews.textContent = `강수 확률 있음 (${maxRainProb}%) - 흐린 날씨 주의`;
+    } else {
+        elements.rainNews.textContent = '당분간 비 소식 없음 - 맑은 날씨 지속';
+    }
+
+    // 2. Wind Strength (km/h)
+    const windSpeed = data.current_weather.windspeed;
+    let strength = '';
+    if (windSpeed < 5) strength = '잔잔함 (미풍)';
+    else if (windSpeed < 15) strength = '약함 (남실바람)';
+    else if (windSpeed < 30) strength = '보통 (산들바람)';
+    else if (windSpeed < 50) strength = '강함 (된바람) - 시설물 주의';
+    else strength = '매우 강함 (폭풍) - 외출 자제';
+    elements.windStrength.textContent = `${strength} (${windSpeed}km/h)`;
+
+    // 3. UV Index
+    const maxUV = data.daily.uv_index_max[0];
+    let uvLevel = '';
+    if (maxUV < 3) uvLevel = '낮음 (안전)';
+    else if (maxUV < 6) uvLevel = '보통 (자외선 차단 권장)';
+    else if (maxUV < 8) uvLevel = '높음 (모자, 선글라스 필수)';
+    else uvLevel = '매우 높음 (장시간 노출 위험)';
+    elements.uvIndex.textContent = `자외선 지수: ${uvLevel} (${maxUV})`;
 }
 
 function generateAdvice(current, humidity, rainProb) {
