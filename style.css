@@ -1,12 +1,29 @@
 :root {
-    --primary-black: #000000;
-    --dark-gray: #333333;
-    --medium-gray: #666666;
-    --light-gray: #eeeeee;
-    --light-bg: #f9f9f9;
-    --white: #ffffff;
-    --text-color: #222;
-    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Light Mode (Default) */
+    --bg-color: #f9f9f9;
+    --container-bg: #ffffff;
+    --text-color: #222222;
+    --header-color: #000000;
+    --section-border: #eeeeee;
+    --card-bg: #ffffff;
+    --card-border: #dddddd;
+    --accent-color: #000000;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    --input-bg: #ffffff;
+}
+
+body.dark-mode {
+    /* Dark Mode */
+    --bg-color: #121212;
+    --container-bg: #1e1e1e;
+    --text-color: #e0e0e0;
+    --header-color: #ffffff;
+    --section-border: #333333;
+    --card-bg: #252525;
+    --card-border: #444444;
+    --accent-color: #ffffff;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --input-bg: #2d2d2d;
 }
 
 * {
@@ -14,10 +31,11 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
 body {
-    background-color: var(--light-bg);
+    background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.6;
 }
@@ -31,14 +49,34 @@ body {
 header {
     text-align: center;
     margin-bottom: 30px;
+    position: relative;
 }
 
 header h1 {
-    color: var(--primary-black);
+    color: var(--header-color);
     margin-bottom: 20px;
     font-size: 2rem;
     text-transform: uppercase;
     letter-spacing: 1px;
+}
+
+/* Theme Toggle Button */
+#themeToggle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+#themeToggle:hover {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
 }
 
 .search-box {
@@ -49,53 +87,46 @@ header h1 {
 
 .search-box input {
     padding: 12px 20px;
-    border: 2px solid var(--primary-black);
-    border-radius: 0;
+    border: 2px solid var(--accent-color);
+    background-color: var(--input-bg);
+    color: var(--text-color);
     width: 60%;
     outline: none;
     font-size: 1rem;
 }
 
 .search-box button {
-    background-color: var(--primary-black);
+    background-color: var(--accent-color);
     border: none;
-    color: white;
+    color: var(--bg-color);
     padding: 12px 25px;
-    border-radius: 0;
     cursor: pointer;
-    transition: background 0.3s;
-}
-
-.search-box button:hover {
-    background-color: var(--dark-gray);
 }
 
 section {
-    background: var(--white);
+    background: var(--container-bg);
     padding: 25px;
-    border-radius: 0;
     margin-bottom: 20px;
     box-shadow: var(--shadow);
-    border: 1px solid var(--light-gray);
+    border: 1px solid var(--section-border);
 }
 
 h3 {
     margin-bottom: 15px;
-    color: var(--primary-black);
-    border-bottom: 2px solid var(--primary-black);
+    color: var(--header-color);
+    border-bottom: 2px solid var(--accent-color);
     padding-bottom: 10px;
     text-transform: uppercase;
     font-size: 1.2rem;
 }
 
-/* Current Weather */
 .current-weather {
     display: flex;
     justify-content: space-around;
     align-items: center;
     flex-wrap: wrap;
-    background: linear-gradient(135deg, var(--dark-gray), var(--primary-black));
-    color: white;
+    background: var(--accent-color);
+    color: var(--bg-color);
     border: none;
 }
 
@@ -123,12 +154,6 @@ h3 {
     text-align: center;
 }
 
-.detail-item i {
-    font-size: 1.5rem;
-    margin-bottom: 5px;
-}
-
-/* Farming Advice */
 .advice-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -137,26 +162,18 @@ h3 {
 
 .advice-card {
     padding: 15px;
-    border-radius: 0;
-    background-color: var(--white);
-    border: 1px solid var(--light-gray);
-    border-top: 5px solid var(--primary-black);
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-top: 5px solid var(--accent-color);
     text-align: center;
 }
 
 .advice-card i {
     font-size: 2rem;
-    color: var(--primary-black);
+    color: var(--accent-color);
     margin-bottom: 10px;
 }
 
-.advice-card h4 {
-    margin-bottom: 5px;
-    color: var(--primary-black);
-    font-weight: bold;
-}
-
-/* Forecast */
 .forecast-list {
     display: flex;
     overflow-x: auto;
@@ -168,9 +185,8 @@ h3 {
     min-width: 100px;
     text-align: center;
     padding: 10px;
-    background: var(--white);
-    border: 1px solid var(--light-gray);
-    border-radius: 0;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
 }
 
 .forecast-item .day {
@@ -179,17 +195,11 @@ h3 {
     margin-bottom: 5px;
 }
 
-/* Loader */
-.loader {
-    text-align: center;
-    padding: 50px;
-}
-
 .spinner {
     width: 50px;
     height: 50px;
-    border: 5px solid var(--light-gray);
-    border-top: 5px solid var(--primary-black);
+    border: 5px solid var(--section-border);
+    border-top: 5px solid var(--accent-color);
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin: 0 auto 15px;
@@ -205,22 +215,19 @@ h3 {
 }
 
 .error-msg {
-    color: #000;
+    color: var(--text-color);
     text-align: center;
     padding: 20px;
-    border: 2px solid #000;
+    border: 2px solid var(--accent-color);
 }
 
 @media (max-width: 600px) {
     .search-box input {
         width: 100%;
     }
-    .temp-container {
-        font-size: 2.5rem;
-    }
-    .details {
-        margin-top: 20px;
-        width: 100%;
-        justify-content: space-between;
+    #themeToggle {
+        position: static;
+        display: block;
+        margin: 10px auto;
     }
 }

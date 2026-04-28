@@ -17,8 +17,23 @@ const elements = {
     sowingAdvice: document.querySelector('#sowingAdvice p'),
     pestAdvice: document.querySelector('#pestAdvice p'),
     workAdvice: document.querySelector('#workAdvice p'),
-    forecastContainer: document.getElementById('forecastContainer')
+    forecastContainer: document.getElementById('forecastContainer'),
+    themeToggle: document.getElementById('themeToggle')
 };
+
+// Theme Toggle Logic
+elements.themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    const isDark = document.body.classList.contains('dark-mode');
+    elements.themeToggle.textContent = isDark ? 'LIGHT MODE' : 'DARK MODE';
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+});
+
+// Load saved theme
+if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+    elements.themeToggle.textContent = 'LIGHT MODE';
+}
 
 // Weather codes mapping to icons and descriptions
 const weatherMap = {
