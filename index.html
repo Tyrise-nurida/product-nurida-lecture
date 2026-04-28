@@ -123,21 +123,21 @@
                 <div class="pest-grid" id="pestGrid">
                     <!-- 병해 카테고리 -->
                     <div class="pest-item disease">
-                        <div class="pest-img-placeholder"><i class="fas fa-apple-whole"></i></div>
+                        <div class="pest-img"><img src="https://images.unsplash.com/photo-1528821128474-27f963b067bf?w=400&auto=format&fit=crop" alt="탄저병"></div>
                         <div class="pest-info">
                             <h4>탄저병 (Anthracnose)</h4>
                             <p>7~8월 고온다습 시 발생. 과실에 움푹한 반점 형성. 병든 과실 즉시 소각.</p>
                         </div>
                     </div>
                     <div class="pest-item disease">
-                        <div class="pest-img-placeholder"><i class="fas fa-leaf"></i></div>
+                        <div class="pest-img"><img src="https://images.unsplash.com/photo-1597333534154-12122d29b183?w=400&auto=format&fit=crop" alt="갈색무늬병"></div>
                         <div class="pest-info">
                             <h4>갈색무늬병</h4>
                             <p>잎에 반점이 생기며 낙엽 유발. 수세 약화의 주원인. 통풍 관리 중요.</p>
                         </div>
                     </div>
                     <div class="pest-item disease">
-                        <div class="pest-img-placeholder"><i class="fas fa-circle-nodes"></i></div>
+                        <div class="pest-img"><img src="https://images.unsplash.com/photo-1596701062351-be5f6a210417?w=400&auto=format&fit=crop" alt="겹무늬썩음병"></div>
                         <div class="pest-info">
                             <h4>겹무늬썩음병</h4>
                             <p>과실 표면에 겹무늬 모양 반점. 비 오기 전후 정밀 방제 필수.</p>
@@ -145,21 +145,21 @@
                     </div>
                     <!-- 해충 카테고리 -->
                     <div class="pest-item insect">
-                        <div class="pest-img-placeholder"><i class="fas fa-bug"></i></div>
+                        <div class="pest-img"><img src="https://images.unsplash.com/photo-1502136969935-8d8eef54d77b?w=400&auto=format&fit=crop" alt="사과응애"></div>
                         <div class="pest-info">
                             <h4>사과응애</h4>
                             <p>잎의 엽록소 파괴. 고온 건조 시 급증. 초기 예찰 및 방제 필수.</p>
                         </div>
                     </div>
                     <div class="pest-item insect">
-                        <div class="pest-img-placeholder"><i class="fas fa-worm"></i></div>
+                        <div class="pest-img"><img src="https://images.unsplash.com/photo-1626269011270-1065706853f6?w=400&auto=format&fit=crop" alt="복숭아순나방"></div>
                         <div class="pest-info">
                             <h4>복숭아순나방</h4>
                             <p>과실 내부를 갉아먹어 상품성 상실. 유충 침입 전 예방 살포 필요.</p>
                         </div>
                     </div>
                     <div class="pest-item insect">
-                        <div class="pest-img-placeholder"><i class="fas fa-spider"></i></div>
+                        <div class="pest-img"><img src="https://images.unsplash.com/photo-1473186533359-400bb849d37f?w=400&auto=format&fit=crop" alt="점박이응애"></div>
                         <div class="pest-info">
                             <h4>점박이응애</h4>
                             <p>잎 뒷면에서 흡즙. 잎이 백색으로 변하며 조기 낙엽 유발.</p>
@@ -167,14 +167,14 @@
                     </div>
                     <!-- 생리 장해 카테고리 -->
                     <div class="pest-item physiological">
-                        <div class="pest-img-placeholder"><i class="fas fa-flask"></i></div>
+                        <div class="pest-img"><img src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?w=400&auto=format&fit=crop" alt="고두병"></div>
                         <div class="pest-info">
                             <h4>고두병 (Bitter Pit)</h4>
                             <p>칼슘 결핍으로 발생. 과실 표면에 검은 반점. 토양 수분 및 칼슘 관리 중요.</p>
                         </div>
                     </div>
                     <div class="pest-item physiological">
-                        <div class="pest-img-placeholder"><i class="fas fa-sun"></i></div>
+                        <div class="pest-img"><img src="https://images.unsplash.com/photo-1516594798947-e65505dbb29d?w=400&auto=format&fit=crop" alt="일소 피해"></div>
                         <div class="pest-info">
                             <h4>일소 피해 (Sunscald)</h4>
                             <p>강한 직사광선으로 과실 온도 상승. 화상 입은 듯한 변색. 미세 살수 권장.</p>
@@ -250,10 +250,27 @@
             <section class="dashboard-section contact-section">
                 <h3><i class="fas fa-handshake"></i> 전문가 상담 신청</h3>
                 <form action="https://formspree.io/f/mgorjppl" method="POST" class="contact-form">
-                    <input type="email" name="email" placeholder="이메일 또는 연락처" required>
+                    <div class="email-input-group">
+                        <input type="text" name="email_user" placeholder="이메일 아이디" required>
+                        <span>@</span>
+                        <input type="text" id="email_domain" name="email_domain" placeholder="도메인 선택" required>
+                        <select id="domain_selector">
+                            <option value="">직접 입력</option>
+                            <option value="naver.com">naver.com</option>
+                            <option value="daum.net">daum.net</option>
+                            <option value="hanmail.net">hanmail.net</option>
+                            <option value="gmail.com">gmail.com</option>
+                            <option value="nate.com">nate.com</option>
+                        </select>
+                    </div>
+                    <!-- Hidden field to combine email for Formspree -->
+                    <input type="hidden" name="email" id="full_email">
                     <textarea name="message" rows="3" placeholder="재배 컨설팅 문의 내용을 입력해주세요." required></textarea>
                     <button type="submit" class="submit-btn">상담 요청하기</button>
                 </form>
+                <div class="alternative-contact">
+                    <p>또는 직접 문의: <a href="mailto:support@nurida.com">support@nurida.com</a></p>
+                </div>
             </section>
         </main>
 

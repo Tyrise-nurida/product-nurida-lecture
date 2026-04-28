@@ -33,10 +33,37 @@ const elements = {
     uvIndex: document.getElementById('uvIndex'),
     updateTime: document.getElementById('updateTime'),
     pestTabs: document.querySelectorAll('.pest-tab'),
-    pestItems: document.querySelectorAll('.pest-item')
+// ... existing code ...
+    pestItems: document.querySelectorAll('.pest-item'),
+    domainSelector: document.getElementById('domain_selector'),
+    emailDomainInput: document.getElementById('email_domain'),
+    fullEmailInput: document.getElementById('full_email'),
+    contactForm: document.querySelector('.contact-form'),
+    emailUserInput: document.querySelector('input[name="email_user"]')
 };
 
+// --- Email Domain Selector Logic ---
+if (elements.domainSelector) {
+    elements.domainSelector.addEventListener('change', (e) => {
+        elements.emailDomainInput.value = e.target.value;
+        if (e.target.value === "") {
+            elements.emailDomainInput.focus();
+        }
+    });
+}
+
+if (elements.contactForm) {
+    elements.contactForm.addEventListener('submit', (e) => {
+        const user = elements.emailUserInput.value;
+        const domain = elements.emailDomainInput.value;
+        if (user && domain) {
+            elements.fullEmailInput.value = `${user}@${domain}`;
+        }
+    });
+}
+
 // --- Theme Toggle Logic ---
+// ... rest of the code ...
 elements.themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('light-mode');
     const isLight = document.body.classList.contains('light-mode');
