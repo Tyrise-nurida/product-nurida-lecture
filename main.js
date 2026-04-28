@@ -27,6 +27,17 @@ elements.themeToggle.addEventListener('click', () => {
     const isDark = document.body.classList.contains('dark-mode');
     elements.themeToggle.textContent = isDark ? 'LIGHT MODE' : 'DARK MODE';
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
+
+    // Reset Disqus to apply theme change
+    if (typeof DISQUS !== 'undefined') {
+        DISQUS.reset({
+            reload: true,
+            config: function () {
+                this.page.url = window.location.href;
+                this.page.identifier = window.location.pathname;
+            }
+        });
+    }
 });
 
 // Load saved theme

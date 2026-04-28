@@ -274,6 +274,12 @@ h3 {
     opacity: 0.8;
 }
 
+/* Comments Section */
+.comments-section {
+    margin-top: 30px;
+    padding-bottom: 20px;
+}
+
 @media (max-width: 600px) {
     .search-box input {
         width: 100%;
